@@ -38,8 +38,7 @@ export function AuthProvider({ children }) {
       })
 
       return true
-    } catch (err) {
-      console.warn("Could not register push notifications", err)
+    } catch {
       return false
     }
   }, [])
