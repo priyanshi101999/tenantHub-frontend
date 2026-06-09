@@ -114,9 +114,8 @@ function Billing() {
       try {
         if (hasActiveSubscription) {
           const response = await cancelSubscription()
-          const cancelAt = response.data?.current_period_end
-          setMessage(`Renewal canceled. You keep ${currentPlanName} until ${formatBillingDate(cancelAt)}, then your workspace moves to Free.`)
           await loadPlans()
+          setMessage("")
         } else {
           setMessage("You are already on the Free plan.")
         }
@@ -175,9 +174,8 @@ function Billing() {
     setCanceling(true)
     try {
       const response = await cancelSubscription()
-      const cancelAt = response.data?.current_period_end
-      setMessage(`Renewal canceled. You keep ${currentPlanName} until ${formatBillingDate(cancelAt)}, then your workspace moves to Free.`)
       await loadPlans()
+      setMessage("")
     } catch (err) {
       setError(err.message || "Could not cancel subscription")
     } finally {

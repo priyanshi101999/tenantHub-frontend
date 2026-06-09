@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import TaskForm from "../components/TaskForm"
 import UpgradePrompt from "../components/UpgradePrompt"
+import { getSubscriptionPlans } from "../api/billing"
 import { createTask, deleteTask, deleteTaskAttachment, getTasks, openTaskAttachment, uploadTaskFile } from "../api/tasks"
 import { getUsers } from "../api/workspace"
 
@@ -65,9 +66,11 @@ function Tasks() {
   const [removingTaskId, setRemovingTaskId] = useState(null)
   const [removingAttachmentId, setRemovingAttachmentId] = useState(null)
   const [uploadingTaskId, setUploadingTaskId] = useState(null)
+  const [canUploadFiles, setCanUploadFiles] = useState(false)
 
   useEffect(() => {
     loadUsers()
+    loadPlanFeatures()
   }, [])
 
   useEffect(() => {
@@ -111,6 +114,17 @@ function Tasks() {
       setUsers(response.data?.users || [])
     } catch {
       setUsers([])
+    }
+  }
+
+  async function loadPlanFeatures() {
+    try {
+      const response = await getSubscriptionPlans()
+      const data = response.data || {}
+      const currentPlan = (data.plans || []).find(plan => plan.id === data.current_plan_id)
+      setCanUploadFiles(Boolean(currentPlan?.features?.file_attachments))
+    } catch {
+      setCanUploadFiles(false)
     }
   }
 
@@ -238,7 +252,7 @@ function Tasks() {
         {error && <p className="mb-4 rounded bg-red-50 p-3 text-sm text-red-700">{error}</p>}
         {message && <p className="mb-4 rounded bg-green-50 p-3 text-sm text-green-700">{message}</p>}
         {upgradeMessage && <div className="mb-4"><UpgradePrompt message={upgradeMessage} /></div>}
-        {showCreate && <div className="mb-6"><TaskForm users={users} onSubmit={handleCreate} loading={loading} allowAttachment /></div>}
+        {showCreate && <div className="mb-6"><TaskForm users={users} onSubmit={handleCreate} loading={loading} allowAttachment={canUploadFiles} /></div>}
 
         <form onSubmit={applyFilters} className="mb-4 grid gap-3 rounded border bg-white p-3 md:grid-cols-4">
           <select className="rounded border p-2" value={filters.task_status} onChange={e => updateFilters({ task_status: e.target.value })}>
@@ -336,22 +350,24 @@ function Tasks() {
                           <Link className="rounded border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50" to={`/tasks/${task.id}/edit`}>
                             Edit
                           </Link>
-                          <label
-                            title="Upload file"
-                            aria-label="Upload file"
-                            className={`inline-flex h-8 w-8 items-center justify-center rounded border border-gray-300 text-gray-700 hover:bg-gray-50 ${uploadingTaskId === task.id ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
-                          >
-                            <UploadIcon />
-                            <input
-                              className="sr-only"
-                              type="file"
-                              disabled={uploadingTaskId === task.id}
-                              onChange={event => {
-                                handleUpload(task.id, event.target.files?.[0])
-                                event.target.value = ""
-                              }}
-                            />
-                          </label>
+                          {canUploadFiles && (
+                            <label
+                              title="Upload file"
+                              aria-label="Upload file"
+                              className={`inline-flex h-8 w-8 items-center justify-center rounded border border-gray-300 text-gray-700 hover:bg-gray-50 ${uploadingTaskId === task.id ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+                            >
+                              <UploadIcon />
+                              <input
+                                className="sr-only"
+                                type="file"
+                                disabled={uploadingTaskId === task.id}
+                                onChange={event => {
+                                  handleUpload(task.id, event.target.files?.[0])
+                                  event.target.value = ""
+                                }}
+                              />
+                            </label>
+                          )}
                           <button
                             type="button"
                             onClick={() => handleDelete(task.id)}

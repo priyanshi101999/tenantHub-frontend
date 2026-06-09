@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import TaskForm from "../components/TaskForm"
+import { getSubscriptionPlans } from "../api/billing"
 import { deleteTaskAttachment, getTask, openTaskAttachment, updateTask, uploadTaskFile } from "../api/tasks"
 import { getUsers } from "../api/workspace"
 
@@ -37,6 +38,7 @@ function TaskEdit() {
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [removingAttachmentId, setRemovingAttachmentId] = useState(null)
+  const [canUploadFiles, setCanUploadFiles] = useState(false)
 
   useEffect(() => {
     loadPage()
@@ -63,10 +65,22 @@ function TaskEdit() {
       ])
       setTask(taskResponse.data)
       setUsers(usersResponse.data?.users || [])
+      await loadPlanFeatures()
     } catch (err) {
       setError(err.message || "Could not load task")
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function loadPlanFeatures() {
+    try {
+      const response = await getSubscriptionPlans()
+      const data = response.data || {}
+      const currentPlan = (data.plans || []).find(plan => plan.id === data.current_plan_id)
+      setCanUploadFiles(Boolean(currentPlan?.features?.file_attachments))
+    } catch {
+      setCanUploadFiles(false)
     }
   }
 
@@ -142,7 +156,7 @@ function TaskEdit() {
               submitLabel="Save changes"
               submittingLabel="Saving..."
               resetOnSubmit={false}
-              allowAttachment
+              allowAttachment={canUploadFiles}
             />
 
             <section className="mt-6 rounded border bg-white p-4 shadow-sm">
