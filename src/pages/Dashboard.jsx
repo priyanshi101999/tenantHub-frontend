@@ -41,10 +41,10 @@ function Dashboard() {
     <>
       <Navbar />
       <main className="mx-auto max-w-6xl px-4 py-6">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
             <h1 className="text-2xl font-bold">Dashboard</h1>
-            <p className="text-gray-600">{user?.workspace?.name || "Your workspace"}</p>
+            <p className="truncate text-gray-600">{user?.workspace?.name || "Your workspace"}</p>
           </div>
           <PlanBadge plan={user?.plan || "Free"} />
         </div>
@@ -52,7 +52,7 @@ function Dashboard() {
         {error && <p className="mb-4 rounded bg-red-50 p-3 text-sm text-red-700">{error}</p>}
         {loading && <p className="mb-4 rounded border bg-white p-4 text-sm text-gray-600">Loading dashboard...</p>}
 
-        <div className="grid gap-4 md:grid-cols-5">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <Stat label="Total" value={stats.total_tasks} />
           <Stat label="Todo" value={stats.todo} />
           <Stat label="In progress" value={stats.in_progress} />

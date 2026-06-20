@@ -56,35 +56,36 @@ function TaskForm({ users, onSubmit, loading, initialTask = null, formTitle = "C
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded border bg-white p-4 shadow-sm">
+    <form onSubmit={handleSubmit} className="min-w-0 rounded border bg-white p-4 shadow-sm">
       <h2 className="mb-4 text-lg font-semibold">{formTitle}</h2>
       <div className="grid gap-3 md:grid-cols-2">
-        <input className="rounded border p-2" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} required />
-        <select className="rounded border p-2" value={status} onChange={e => setStatus(e.target.value)}>
+        <input className="min-w-0 rounded border p-2" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} required />
+        <select className="min-w-0 rounded border p-2" value={status} onChange={e => setStatus(e.target.value)}>
           <option value="TODO">Todo</option>
           <option value="IN_PROGRESS">In progress</option>
+          <option value="OVERDUE">Overdue</option>
           <option value="DONE">Done</option>
         </select>
-        <select className="rounded border p-2" value={priority} onChange={e => setPriority(e.target.value)}>
+        <select className="min-w-0 rounded border p-2" value={priority} onChange={e => setPriority(e.target.value)}>
           <option value="LOW">Low</option>
           <option value="MEDIUM">Medium</option>
           <option value="HIGH">High</option>
         </select>
-        <select className="rounded border p-2" value={assigneeId} onChange={e => setAssigneeId(e.target.value)}>
+        <select className="min-w-0 rounded border p-2" value={assigneeId} onChange={e => setAssigneeId(e.target.value)}>
           <option value="">Unassigned</option>
           {users.map(user => <option key={user.id} value={user.id}>{user.name || user.email}</option>)}
         </select>
-        <input className="rounded border p-2" type="datetime-local" value={dueDate} onChange={e => setDueDate(e.target.value)} />
+        <input className="min-w-0 rounded border p-2" type="datetime-local" value={dueDate} onChange={e => setDueDate(e.target.value)} />
         {allowAttachment && (
           <input
-            className="rounded border p-2"
+            className="min-w-0 rounded border p-2 text-sm file:mr-3 file:rounded file:border-0 file:bg-gray-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-gray-700"
             type="file"
             accept="image/jpeg,image/png,application/pdf"
             onChange={e => setAttachment(e.target.files?.[0] || null)}
           />
         )}
       </div>
-      <textarea className="mt-3 w-full rounded border p-2" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
+      <textarea className="mt-3 w-full min-w-0 rounded border p-2" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
       <button disabled={loading} className="mt-3 rounded bg-blue-600 px-4 py-2 text-white disabled:bg-blue-300">
         {loading ? submittingLabel : submitLabel}
       </button>

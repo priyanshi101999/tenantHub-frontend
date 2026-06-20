@@ -47,6 +47,7 @@ function TaskCard({ task, users, onUpdate, onUpload }) {
         <select className="rounded border p-2" value={task.status || "TODO"} onChange={changeStatus}>
           <option value="TODO">Todo</option>
           <option value="IN_PROGRESS">In progress</option>
+          <option value="OVERDUE">Overdue</option>
           <option value="DONE">Done</option>
         </select>
 

@@ -187,7 +187,7 @@ function Billing() {
     <>
       <Navbar />
       <main className="mx-auto max-w-6xl px-4 py-6">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-bold">Billing</h1>
           <PlanBadge plan={currentPlanName} />
         </div>
@@ -204,7 +204,7 @@ function Billing() {
 
         {(loadingPlans || completingCheckout) && <p className="rounded border bg-white p-4 text-gray-600">{completingCheckout ? "Activating subscription..." : "Loading plans..."}</p>}
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {plans.map(plan => (
             <div key={plan.id} className={`rounded border bg-white p-4 shadow-sm ${plan.id === currentPlanId ? "border-blue-500 ring-1 ring-blue-200" : ""}`}>
               <div className="mb-4 flex items-start justify-between gap-3">
@@ -214,7 +214,7 @@ function Billing() {
                     {plan.price > 0 ? `$${plan.price}/month` : "Free"}
                   </p>
                 </div>
-                <span className={`rounded px-2 py-1 text-xs ${plan.id === currentPlanId ? "bg-blue-100 font-semibold text-blue-700" : "bg-gray-100 text-gray-700"}`}>
+                <span className={`max-w-32 rounded px-2 py-1 text-right text-xs sm:max-w-none ${plan.id === currentPlanId ? "bg-blue-100 font-semibold text-blue-700" : "bg-gray-100 text-gray-700"}`}>
                   {plan.id === currentPlanId ? subscription?.cancel_at_period_end ? "Current until renewal" : "Current" : plan.is_active ? "Available" : "Inactive"}
                 </span>
               </div>
@@ -233,7 +233,7 @@ function Billing() {
                   .map(([name, value]) => (
                     <div key={name} className="flex justify-between gap-4">
                       <dt className="text-gray-600">{formatFeatureName(name)}</dt>
-                      <dd className="font-medium">{formatFeatureValue(value)}</dd>
+                      <dd className="text-right font-medium">{formatFeatureValue(value)}</dd>
                     </div>
                   ))}
               </dl>

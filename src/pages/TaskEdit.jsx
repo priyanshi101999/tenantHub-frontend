@@ -135,9 +135,9 @@ function TaskEdit() {
     <>
       <Navbar />
       <main className="mx-auto max-w-3xl px-4 py-6">
-        <div className="mb-6 flex items-center justify-between gap-3">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-bold">Edit task</h1>
-          <Link className="rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50" to="/tasks">
+          <Link className="inline-flex w-full justify-center rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 sm:w-auto" to="/tasks">
             Back to tasks
           </Link>
         </div>
@@ -159,19 +159,19 @@ function TaskEdit() {
               allowAttachment={canUploadFiles}
             />
 
-            <section className="mt-6 rounded border bg-white p-4 shadow-sm">
+            <section className="mt-6 min-w-0 rounded border bg-white p-4 shadow-sm">
               <h2 className="mb-4 text-lg font-semibold">Uploaded files</h2>
               {task.attachments?.length > 0 ? (
                 <div className="grid gap-2">
                   {task.attachments.map(attachment => (
-                    <div key={attachment.id} className="flex items-center justify-between gap-3 rounded border border-gray-200 p-3">
+                    <div key={attachment.id} className="flex min-w-0 items-center justify-between gap-3 rounded border border-gray-200 p-3">
                       <button
                         type="button"
                         onClick={() => handleOpenAttachment(attachment.id)}
-                        className="inline-flex min-w-0 items-center gap-2 text-sm font-medium text-gray-800 hover:text-blue-700"
+                        className="inline-flex min-w-0 flex-1 items-center gap-2 text-sm font-medium text-gray-800 hover:text-blue-700"
                         title={attachment.file_name}
                       >
-                        <FileIcon />
+                        <span className="flex-none"><FileIcon /></span>
                         <span className="truncate">{attachment.file_name}</span>
                       </button>
                       <button

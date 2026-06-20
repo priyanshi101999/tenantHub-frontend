@@ -244,7 +244,7 @@ function Tasks() {
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-bold">Tasks</h1>
           <div className="flex gap-2">
-            <button onClick={toggleCreateForm} className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white">
+            <button onClick={toggleCreateForm} className="w-full rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white sm:w-auto">
               {showCreate ? "Close" : "New task"}
             </button>
           </div>
@@ -254,20 +254,21 @@ function Tasks() {
         {upgradeMessage && <div className="mb-4"><UpgradePrompt message={upgradeMessage} /></div>}
         {showCreate && <div className="mb-6"><TaskForm users={users} onSubmit={handleCreate} loading={loading} allowAttachment={canUploadFiles} /></div>}
 
-        <form onSubmit={applyFilters} className="mb-4 grid gap-3 rounded border bg-white p-3 md:grid-cols-4">
-          <select className="rounded border p-2" value={filters.task_status} onChange={e => updateFilters({ task_status: e.target.value })}>
+        <form onSubmit={applyFilters} className="mb-4 grid gap-3 rounded border bg-white p-3 sm:grid-cols-2 lg:grid-cols-4">
+          <select className="min-w-0 rounded border p-2" value={filters.task_status} onChange={e => updateFilters({ task_status: e.target.value })}>
             <option value="">Any status</option>
             <option value="TODO">Todo</option>
             <option value="IN_PROGRESS">In progress</option>
+            <option value="OVERDUE">Overdue</option>
             <option value="DONE">Done</option>
           </select>
-          <select className="rounded border p-2" value={filters.priority} onChange={e => updateFilters({ priority: e.target.value })}>
+          <select className="min-w-0 rounded border p-2" value={filters.priority} onChange={e => updateFilters({ priority: e.target.value })}>
             <option value="">Any priority</option>
             <option value="LOW">Low</option>
             <option value="MEDIUM">Medium</option>
             <option value="HIGH">High</option>
           </select>
-          <select className="rounded border p-2" value={filters.assignee_id} onChange={e => updateFilters({ assignee_id: e.target.value })}>
+          <select className="min-w-0 rounded border p-2" value={filters.assignee_id} onChange={e => updateFilters({ assignee_id: e.target.value })}>
             <option value="">Any assignee</option>
             {users.map(user => <option key={user.id} value={user.id}>{user.name || user.email}</option>)}
           </select>
@@ -279,7 +280,7 @@ function Tasks() {
 
         <div className="overflow-hidden rounded border bg-white shadow-sm">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <table className="min-w-[920px] divide-y divide-gray-200 text-sm lg:min-w-full">
               <thead className="bg-gray-50 text-left text-xs font-semibold uppercase text-gray-500">
                 <tr>
                   <th className="px-4 py-3">Task</th>
@@ -304,7 +305,7 @@ function Tasks() {
                   return (
                     <tr key={task.id} className="hover:bg-gray-50">
                       <td className="px-4 py-3">
-                        <p className="font-medium text-gray-900">{task.title}</p>
+                        <p className="max-w-48 truncate font-medium text-gray-900" title={task.title}>{task.title}</p>
                       </td>
                       <td className="px-4 py-3">
                         <p className="max-w-xs whitespace-normal text-gray-700">{task.description || "-"}</p>
@@ -313,14 +314,14 @@ function Tasks() {
                         {task.attachments?.length > 0 && (
                           <div className="flex max-w-xs flex-col gap-2">
                             {task.attachments.map(attachment => (
-                              <div key={attachment.id} className="flex max-w-full items-center gap-1">
+                              <div key={attachment.id} className="flex max-w-full min-w-0 items-center gap-1">
                                 <button
                                   type="button"
                                   onClick={() => handleOpenAttachment(attachment.id)}
                                   className="inline-flex min-w-0 flex-1 items-center gap-1 rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"
                                   title={attachment.file_name}
                                 >
-                                  <FileIcon />
+                                  <span className="flex-none"><FileIcon /></span>
                                   <span className="truncate">{attachment.file_name}</span>
                                 </button>
                                 <button

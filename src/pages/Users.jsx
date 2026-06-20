@@ -165,10 +165,10 @@ function Users() {
         {isAdmin && showCreate && <form onSubmit={handleCreate} className="mb-6 rounded border bg-white p-4 shadow-sm">
           <h2 className="mb-4 text-lg font-semibold">Create user</h2>
           <div className="grid gap-3 md:grid-cols-3">
-            <input required className="rounded border p-2" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-            <input required type="email" className="rounded border p-2" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-            <input required className="rounded border p-2" placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
-            <select className="rounded border p-2" value={role} onChange={e => setRole(e.target.value)}>
+            <input required className="min-w-0 rounded border p-2" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+            <input required type="email" className="min-w-0 rounded border p-2" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+            <input required className="min-w-0 rounded border p-2" placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
+            <select className="min-w-0 rounded border p-2" value={role} onChange={e => setRole(e.target.value)}>
               <option value="USER">User</option>
               <option value="ADMIN">Admin</option>
             </select>
@@ -182,7 +182,7 @@ function Users() {
 
         <div className="overflow-hidden rounded border bg-white shadow-sm">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <table className="min-w-[760px] divide-y divide-gray-200 text-sm md:min-w-full">
               <thead className="bg-gray-50 text-left text-xs font-semibold uppercase text-gray-500">
                 <tr>
                   <th className="px-4 py-3">Name</th>
@@ -200,8 +200,8 @@ function Users() {
                 )}
                 {!loadingUsers && users.map(item => (
                   <tr key={item.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 font-medium text-gray-900">{item.name || "Unnamed user"}</td>
-                    <td className="px-4 py-3 text-gray-700">{item.email}</td>
+                    <td className="px-4 py-3 font-medium text-gray-900"><span className="block max-w-48 truncate" title={item.name || "Unnamed user"}>{item.name || "Unnamed user"}</span></td>
+                    <td className="px-4 py-3 text-gray-700"><span className="block max-w-56 truncate" title={item.email}>{item.email}</span></td>
                     <td className="px-4 py-3 text-gray-700">{item.phone || "-"}</td>
                     <td className="px-4 py-3">
                       <span className="rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700">{item.role}</span>

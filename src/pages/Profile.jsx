@@ -78,8 +78,8 @@ function Profile() {
         {message && <p className="mb-4 rounded bg-green-50 p-3 text-sm text-green-700">{message}</p>}
 
         <div className="mb-6 rounded border bg-white p-4 shadow-sm">
-          <p className="font-semibold">{user?.name || "Current user"}</p>
-          <p className="text-sm text-gray-600">{user?.email}</p>
+          <p className="truncate font-semibold">{user?.name || "Current user"}</p>
+          <p className="truncate text-sm text-gray-600">{user?.email}</p>
         </div>
 
         <section className="mb-4 overflow-hidden rounded border bg-white shadow-sm">
@@ -95,7 +95,7 @@ function Profile() {
             <form onSubmit={handlePassword} className="border-t p-4">
               <PasswordInput wrapperClassName="mb-3" placeholder="Old password" value={oldPassword} onChange={e => setOldPassword(e.target.value)} />
               <PasswordInput wrapperClassName="mb-3" placeholder="New password" value={newPassword} onChange={e => setNewPassword(e.target.value)} />
-              <button disabled={loading} className="rounded bg-blue-600 px-4 py-2 text-white disabled:bg-blue-300">
+              <button disabled={loading} className="w-full rounded bg-blue-600 px-4 py-2 text-white disabled:bg-blue-300 sm:w-auto">
                 {loading ? "Saving..." : "Change password"}
               </button>
             </form>
@@ -115,7 +115,7 @@ function Profile() {
             <div className="border-t p-4">
               <label className="mb-3 flex items-center gap-2"><input type="checkbox" checked={emailAlerts} onChange={e => setEmailAlerts(e.target.checked)} /> Email</label>
               <label className="mb-3 flex items-center gap-2"><input type="checkbox" checked={pushAlerts} onChange={e => setPushAlerts(e.target.checked)} /> Push</label>
-              <button onClick={handleDeviceToken} disabled={loading || !pushAlerts} className="rounded bg-gray-900 px-4 py-2 text-white disabled:bg-gray-300">
+              <button onClick={handleDeviceToken} disabled={loading || !pushAlerts} className="w-full rounded bg-gray-900 px-4 py-2 text-white disabled:bg-gray-300 sm:w-auto">
                 {loading ? "Saving..." : "Enable push notifications"}
               </button>
             </div>
